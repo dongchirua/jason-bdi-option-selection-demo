@@ -1,0 +1,67 @@
+/*
+   Project jason_MARL
+
+   Gradle build file for Jason Application
+   September 28, 2022 - 15:14:51
+*/
+
+defaultTasks 'run'
+
+apply plugin: 'java'
+
+version '1.0'
+group   'org.jason'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://raw.githubusercontent.com/jacamo-lang/mvn-repo/master" }
+    maven { url "https://jade.tilab.com/maven/" }
+    flatDir { dirs 'lib' }
+}
+
+dependencies {
+    implementation('org.jason:jason:3.1')
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/java'
+        }
+        resources {
+            srcDir 'src/resources'
+        }
+    }
+}
+
+task runDefaultAgent (type: JavaExec, dependsOn: 'classes') {
+    description 'runs the application'
+    main = 'jason.infra.local.RunLocalMAS'
+    args 'default_agent.mas2j'
+    doFirst {
+        mkdir 'log'
+    }
+    classpath sourceSets.main.runtimeClasspath
+}
+
+task runCustomizedAgent (type: JavaExec, dependsOn: 'classes') {
+    description 'runs the application'
+    main = 'jason.infra.local.RunLocalMAS'
+    args 'customized_agent.mas2j'
+    doFirst {
+        mkdir 'log'
+    }
+    classpath sourceSets.main.runtimeClasspath
+}
+
+clean {
+    delete 'bin'
+    delete 'build'
+    delete 'log'
+}

@@ -1,0 +1,6 @@
+MAS test {
+        environment: env.GridWorldEnv(gui)
+        agents: demo
+                agentClass agt.defaultAgent;
+        aslSourcePath: "src/asl";
+}
